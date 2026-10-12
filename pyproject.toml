@@ -1,0 +1,26 @@
+[project]
+name = "brainscan"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+authors = [
+    { name = "jerymy-k", email = "karimimoha0@gmail.com" }
+]
+requires-python = ">=3.11"
+dependencies = [
+    "matplotlib>=3.11.2",
+    "numpy>=2.4.6",
+    "opencv-python>=5.0.0.93",
+    "pydot>=4.0.1",
+    "scikit-learn>=1.9.1",
+    "seaborn>=0.13.2",
+    "streamlit>=1.65.0",
+    "tensorflow>=2.21.0",
+]
+
+[project.scripts]
+brainscan = "brainscan:main"
+
+[build-system]
+requires = ["uv_build>=0.12.13,<0.13.0"]
+build-backend = "uv_build"
