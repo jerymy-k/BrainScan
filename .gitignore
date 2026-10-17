@@ -196,3 +196,6 @@ pyrightconfig.json
 
 
 /Data
+/Resized_data
+*.keras
+*.h5
