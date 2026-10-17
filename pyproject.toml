@@ -1,7 +1,7 @@
 [project]
 name = "brainscan"
 version = "0.1.0"
-description = "Add your description here"
+description = "Brain tumour classification from MRI scans with a CNN and a Streamlit app"
 readme = "README.md"
 authors = [
     { name = "jerymy-k", email = "karimimoha0@gmail.com" }
@@ -21,7 +21,8 @@ dependencies = [
 ]
 
 [project.scripts]
-brainscan = "brainscan:main"
+brainscan-train = "brainscan.train:main"
+brainscan-evaluate = "brainscan.evaluate:main"
 
 [build-system]
 requires = ["uv_build>=0.12.13,<0.13.0"]

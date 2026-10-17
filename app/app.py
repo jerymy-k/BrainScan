@@ -7,16 +7,9 @@ from pathlib import Path
 
 import streamlit as st
 
-from brainscan.predict import (
-    CLASS_NAMES,
-    MODEL_PATH,
-    VALID_EXTENSIONS,
-    InvalidImageError,
-    load_model,
-    predict_image,
-)
+from brainscan.config import CLASS_NAMES, DATA_DIR, MODEL_PATH, VALID_EXTENSIONS
+from brainscan.predict import InvalidImageError, load_model, predict_image
 
-DATA_DIR = Path(__file__).resolve().parents[1] / 'Data'
 LOW_CONFIDENCE = 0.60
 
 CLASS_INFO = {

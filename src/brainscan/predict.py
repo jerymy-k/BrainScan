@@ -1,3 +1,5 @@
+"""Predict the tumour class of a single MRI image with the trained model."""
+
 from functools import lru_cache
 from pathlib import Path
 
@@ -6,25 +8,30 @@ import numpy as np
 import tensorflow as tf
 from PIL import Image
 
-MODEL_PATH = Path(__file__).resolve().parents[2] / 'models' / 'best_brain_tumor_model.keras'
-TARGET_SIZE = (224, 224)
-# Same order as LabelEncoder().classes_ in the training notebook (alphabetical)
-CLASS_NAMES = ['glioma', 'meningioma', 'notumor', 'pituitary']
-VALID_EXTENSIONS = {'.jpg', '.png', '.jpeg', '.bmp'}
+from brainscan.config import CLASS_NAMES, MODEL_PATH, TARGET_SIZE, VALID_EXTENSIONS
 
 
 class InvalidImageError(ValueError):
-    pass
+    """Raised when a file is not a usable image (bad format, empty or corrupted)."""
 
 
 @lru_cache(maxsize=1)
 def load_model(model_path=MODEL_PATH):
+    """Load the trained Keras model once and reuse it on later calls."""
     return tf.keras.models.load_model(model_path)
 
 
 def preprocess_image(path):
-    # Same steps as training: cv2 BGR image, resized to 224x224 with INTER_AREA.
-    # No /255 here: the model has its own Rescaling(1./255) layer.
+    """Validate an image file and turn it into a model-ready batch of one.
+
+    Applies the same steps as training: OpenCV BGR image resized to 224x224
+    with INTER_AREA. Pixels stay in 0-255 because the model rescales them
+    itself (Rescaling(1./255) layer).
+
+    Raises:
+        FileNotFoundError: the path does not exist or is not a file.
+        InvalidImageError: unsupported extension, empty, truncated or corrupted file.
+    """
     path = Path(path)
     if not path.is_file():
         raise FileNotFoundError(f"Image not found: {path}")
@@ -49,6 +56,16 @@ def preprocess_image(path):
 
 
 def predict_image(path, model=None):
+    """Classify one MRI image.
+
+    Args:
+        path: path to a .jpg/.jpeg/.png/.bmp image.
+        model: an already loaded Keras model; defaults to the saved best model.
+
+    Returns:
+        dict with ``label`` (predicted class), ``confidence`` (its probability)
+        and ``probabilities`` (class name -> probability for all 4 classes).
+    """
     if model is None:
         model = load_model()
     probs = model.predict(preprocess_image(path), verbose=0)[0]
