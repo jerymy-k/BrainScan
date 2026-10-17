@@ -1,7 +1,7 @@
 [project]
 name = "brainscan"
 version = "0.1.0"
-description = "Add your description here"
+description = "Brain tumour classification from MRI scans with a CNN and a Streamlit app"
 readme = "README.md"
 authors = [
     { name = "jerymy-k", email = "karimimoha0@gmail.com" }
@@ -12,6 +12,7 @@ dependencies = [
     "matplotlib>=3.11.2",
     "numpy>=2.4.6",
     "opencv-python>=5.0.0.93",
+    "pillow>=12.3.0",
     "pydot>=4.0.1",
     "scikit-learn>=1.9.1",
     "seaborn>=0.13.2",
@@ -20,7 +21,8 @@ dependencies = [
 ]
 
 [project.scripts]
-brainscan = "brainscan:main"
+brainscan-train = "brainscan.train:main"
+brainscan-evaluate = "brainscan.evaluate:main"
 
 [build-system]
 requires = ["uv_build>=0.12.13,<0.13.0"]
